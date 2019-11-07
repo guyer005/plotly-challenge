@@ -18,14 +18,22 @@ function buildMetadata(sample) {
 function buildCharts(sample) {
 
 // Plot the default route once the page loads
-var defaultURL = "/belly_button_data.csv";
-d3.json(defaultURL).then(function(data) {
-  var data = [{ values : [data],
-    labels: [otu_label],
+var defaultURL = "/samples/<sample>";
+d3.json(defaultURL).then(function(sample_values) {
+  var pdata = [{ values : [sample_values],
+    labels: [otu_ids],
+    hovertext: [otu_labels],
     type: 'pie'}];
   var layout = { margin: { t: 30, b: 100 } };
-  Plotly.plot("pie", data, layout);
+  Plotly.newplot('myDiv', pdata, layout);
 });
+
+var tr1 = { 
+  x : [otu_ids],
+  y : [sample_values],
+  mode : 'markers',
+  marker: { size: [sample_values]}
+};
 
 // Update the plot with new data
 function updatePlotly(newdata) {
